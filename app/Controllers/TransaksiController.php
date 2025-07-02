@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\TransactionModel;
 use App\Models\TransactionDetailModel;
+use App\Models\ProductModel;
 
 class TransaksiController extends BaseController
 {
@@ -12,6 +13,7 @@ class TransaksiController extends BaseController
     protected $apiKey;
     protected $transaction;
     protected $transaction_detail;
+    protected $productModel;
 
     function __construct()
     {
@@ -22,6 +24,7 @@ class TransaksiController extends BaseController
         $this->apiKey = env('COST_KEY');
         $this->transaction = new TransactionModel();
         $this->transaction_detail = new TransactionDetailModel();
+        $this->productModel = new ProductModel();
     }
 
     public function index()
@@ -33,13 +36,33 @@ class TransaksiController extends BaseController
 
     public function cart_add()
     {
+        $productId = $this->request->getPost('id');
+        $productName = $this->request->getPost('nama');
+        $productPrice = $this->request->getPost('harga');
+        $productFoto = $this->request->getPost('foto');
+
+        $finalPrice = $productPrice;
+        $nominalDiskonSession = session()->get('nominal_diskon');
+
+        if ($nominalDiskonSession && $nominalDiskonSession > 0) {
+
+            // Kurangi harga produk dengan nominal diskon
+            $finalPrice = $productPrice - $nominalDiskonSession;
+
+            // Pastikan harga tidak menjadi negatif
+            if ($finalPrice < 0) {
+                $finalPrice = 0;
+            }
+        }
+
         $this->cart->insert(array(
             'id'        => $this->request->getPost('id'),
             'qty'       => 1,
-            'price'     => $this->request->getPost('harga'),
+            'price'     => $finalPrice,
             'name'      => $this->request->getPost('nama'),
             'options'   => array('foto' => $this->request->getPost('foto'))
         ));
+
         session()->setflashdata('success', 'Produk berhasil ditambahkan ke keranjang. (<a href="' . base_url() . 'keranjang">Lihat</a>)');
         return redirect()->to(base_url('/'));
     }
@@ -162,8 +185,8 @@ class TransaksiController extends BaseController
                     'transaction_id' => $last_insert_id,
                     'product_id' => $value['id'],
                     'jumlah' => $value['qty'],
-                    'diskon' => 0,
-                    'subtotal_harga' => $value['qty'] * $value['price'],
+                    'diskon' => session()->get('nominal_diskon') ?? 0,
+                    'subtotal_harga' =>  $value['qty'] * $value['price'],
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s")
                 ];

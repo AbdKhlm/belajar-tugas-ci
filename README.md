@@ -12,23 +12,60 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
 ## Fitur
 
 - Katalog Produk
+
   - Tampilan produk dengan gambar
   - Pencarian produk
+
 - Keranjang Belanja
+
   - Tambah/hapus produk
   - Update jumlah produk
+
 - Sistem Transaksi
+
   - Proses checkout
   - Riwayat transaksi
+
 - Panel Admin
+
   - Manajemen produk (CRUD)
   - Manajemen kategori
   - Laporan transaksi
   - Export data ke PDF
+
 - Sistem Autentikasi
+
   - Login/Register pengguna
   - Manajemen akun
+
 - UI Responsif dengan NiceAdmin template
+
+- **Autentikasi Pengguna:**
+
+  - Pengguna dapat mendaftar dan login untuk mengakses fitur aplikasi.
+  - Hanya pengguna dengan role admin yang dapat mengelola produk dan diskon.
+
+- **Manajemen Produk:**
+
+  - Admin dapat menambah, mengedit, dan menghapus produk.
+  - Setiap produk memiliki nama, harga, jumlah, dan foto.
+
+- **Keranjang Belanja:**
+
+  - Pengguna dapat menambahkan produk ke dalam keranjang.
+  - Harga produk dapat dikurangi dengan diskon yang berlaku.
+
+- **Manajemen Diskon:**
+
+  - Admin dapat menambah, mengedit, dan menghapus data diskon.
+  - Diskon hanya dapat ditambahkan untuk tanggal yang unik, dan validasi diterapkan untuk memastikan tidak ada diskon yang sama.
+
+- **Transaksi Pembelian:**
+  - Pengguna dapat melakukan checkout dan menyelesaikan pembelian.
+  - Data transaksi disimpan dalam database, termasuk detail item yang dibeli dan total harga.
+- **API untuk Dashboard:**
+  - Menyediakan endpoint API untuk mengambil data transaksi pembelian.
+  - Data transaksi mencakup jumlah item yang dibeli untuk setiap transaksi.
 
 ## Persyaratan Sistem
 
@@ -40,7 +77,7 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
 
 1. **Clone repository ini**
    ```bash
-   git clone [URL repository]
+   git clone [https://github.com/AbdKhlm/belajar-tugas-ci]
    cd belajar-ci-tugas
    ```
 2. **Install dependensi**
@@ -50,8 +87,8 @@ Proyek ini adalah platform toko online yang dibangun menggunakan [CodeIgniter 4]
 3. **Konfigurasi database**
 
    - Start module Apache dan MySQL pada XAMPP
-   - Buat database **db_ci4** di phpmyadmin.
-   - copy file .env dari tutorial https://www.notion.so/april-ns/Codeigniter4-Migration-dan-Seeding-045ffe5f44904e5c88633b2deae724d2
+   - import database **db_ci4** di phpmyadmin.
+   - copy file .env dari blogger https://kazuhamiori.blogspot.com/2025/07/env.html
 
 4. **Jalankan migrasi database**
    ```bash

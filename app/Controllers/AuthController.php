@@ -6,15 +6,18 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Models\UserModel;
+use App\Models\DiskonModel;
 
 class AuthController extends BaseController
 {
     protected $user;
+    protected $diskonModel;
 
     function __construct()
     {
         helper('form');
         $this->user = new UserModel();
+        $this->diskonModel = new DiskonModel();
     }
 
     public function login()
@@ -33,10 +36,19 @@ class AuthController extends BaseController
 
                 if ($dataUser) {
                     if (password_verify($password, $dataUser['password'])) {
+
+                        $today = date('Y-m-d');
+                        $diskonHariIni = $this->diskonModel->where('tanggal', $today)->first();
+                        $nominalDiskon = 0;
+                        if ($diskonHariIni) {
+                            $nominalDiskon = $diskonHariIni['nominal'];
+                        }
+
                         session()->set([
                             'username' => $dataUser['username'],
                             'role' => $dataUser['role'],
-                            'isLoggedIn' => TRUE
+                            'isLoggedIn' => TRUE,
+                            'nominal_diskon' => $nominalDiskon
                         ]);
 
                         return redirect()->to(base_url('/'));

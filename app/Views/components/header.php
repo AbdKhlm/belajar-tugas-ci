@@ -166,6 +166,16 @@
 
             </li><!-- End Messages Nav -->
 
+            <!-- Bagian Nominal Diskon -->
+            <?php if (session()->has('nominal_diskon') && session()->get('nominal_diskon') > 0) : ?>
+                <li class="nav-item d-flex align-items-center">
+                    <span class="badge bg-warning text-dark me-2">
+                        Diskon Hari Ini: <?= number_to_currency(session()->get('nominal_diskon'), 'IDR') ?>
+                    </span>
+                </li>
+            <?php endif; ?>
+            <!-- Akhir Bagian Nominal Diskon -->
+
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
